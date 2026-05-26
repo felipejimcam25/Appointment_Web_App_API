@@ -96,11 +96,19 @@ export const getAppointmentById = async (id) => {
     const res = await pool.query(
         `
             SELECT 
-            *
-            FROM
-            appointments
-            WHERE
-            clientid = $1
+            appointments.clientid,
+            appointments.date,
+            appointments.serviceid,
+            appointments.start_time,
+            appointments.end_time,
+            barbers.name AS barber_name,
+            services.name AS service_name
+        FROM appointments
+        INNER JOIN barbers
+            ON appointments.barberid = barbers.id
+        INNER JOIN services
+            ON appointments.serviceid = services.id
+        WHERE appointments.clientid = $1;
         `, [ id ]
     );
 
