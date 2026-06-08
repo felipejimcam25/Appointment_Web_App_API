@@ -108,7 +108,9 @@ export const getAppointmentById = async (id) => {
             ON appointments.barberid = barbers.id
         INNER JOIN services
             ON appointments.serviceid = services.id
-        WHERE appointments.clientid = $1;
+        WHERE appointments.clientid = $1
+        ORDER BY appointments.date DESC, appointments.start_time DESC
+        LIMIT 1;
         `, [ id ]
     );
 

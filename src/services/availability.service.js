@@ -1,3 +1,5 @@
+import { addMinutes } from "../utils/duration.js";
+
 import { getWorkingHoursByDay } from "../models/workingHours.model.js"
 
 import { getAppointmentByDate } from "../models/appointment.model.js";

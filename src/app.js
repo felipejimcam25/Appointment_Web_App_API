@@ -5,7 +5,20 @@ import userRoutes from './routes/users.routes.js';
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+    'https://localhost:3000',
+    'http://localhost:5173'
+]
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if(!origin || allowedOrigins.includes(origin)) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not Allowed by CORS'))
+        }
+    }
+}));
 app.use(express.json());
 app.use(morgan( 'dev' ));
 app.use('/api', userRoutes);

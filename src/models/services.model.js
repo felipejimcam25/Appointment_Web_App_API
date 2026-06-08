@@ -13,3 +13,16 @@ export const getServices = async (service) => {
 
     return res.rows[0];
 } 
+
+export const getAllServices = async () => {
+    const res = await pool.query (
+        `
+            SELECT
+            *
+            FROM
+            services
+        `
+    )
+
+    return res.rows
+}

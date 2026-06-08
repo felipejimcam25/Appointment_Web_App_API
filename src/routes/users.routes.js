@@ -41,6 +41,7 @@ import {
     userUpdateAppointmentStatus 
 } from '../controllers/appointments.controller.js';
 import { createBarber, getBaberById, getBarbers, updateBarber } from '../controllers/barbers.controller.js';
+import { getAllServicesController } from '../controllers/services.controller.js';
 
 //ROUTER CONFIG
 const router = Router();
@@ -113,6 +114,10 @@ router.put('/barbers', verifyToken, isAdmin, updateBarber);
 //GET THE AVAILABLE SLOTS
 router.get('/available-slots', verifyToken, getAvailability)
 
+//--------------------------------------------------------------------
+
+//SERVICES CONTROLLER 
+router.get('/services', verifyToken, getAllServicesController);
 //--------------------------------------------------------------------
 
 //ROUTER EXPORTATION
