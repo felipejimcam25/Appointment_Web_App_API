@@ -7,7 +7,8 @@ const app = express();
 
 const allowedOrigins = [
     'https://localhost:3000',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://appointment-web-app-api.onrender.com'
 ]
 
 app.use(cors({
