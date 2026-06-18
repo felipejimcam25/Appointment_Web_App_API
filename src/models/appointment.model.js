@@ -123,6 +123,7 @@ export const getAllAppointments = async () => {
     const res = await pool.query(
         `
         SELECT 
+        appointments.id AS appointment_id
         appointments.clientid AS client,
         appointments.barberid AS barber,
         appointments.date AS date,
