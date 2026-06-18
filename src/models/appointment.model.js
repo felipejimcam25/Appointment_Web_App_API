@@ -96,6 +96,7 @@ export const getAppointmentById = async (id) => {
     const res = await pool.query(
         `
             SELECT 
+            appointments.id AS appointment_id,
             appointments.clientid,
             appointments.date,
             appointments.serviceid,
