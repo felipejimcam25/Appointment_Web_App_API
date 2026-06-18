@@ -82,7 +82,7 @@ router.delete('/users/:id', verifyToken, isAdmin, getUsers);
 //GET ALL APPOINTMENTS
 router.get('/appointments', verifyToken, isAdmin, userGetAllAppointments);
 //GET THE ACTIVE USER APPOINTMENT
-router.get('/appointments/me', verifyToken, getAppointmenbatByUser);
+router.get('/appointments/me', verifyToken, getAppointmentByUser);
 //GET APPOINTMENTS BY BARBER
 router.get('/appointments/barber/:id', verifyToken, isAdmin, getAppointmentsByBarber);
 //GET TOTAL APPOINTMENTS BY BARBER
