@@ -1,15 +1,29 @@
 import pool from "../config/db.js";
 //THIS MODEL GETS ALL THE APPOINTMENTS BY DATE FROM THE DATABASE
-export const getAppointmentByDate = async (date) => {
+export const getAppointmentByDate = async (date, limit, offset) => {
     const result = await pool.query(
         `
             SELECT start_time, end_time
             From appointments
             WHERE date = $1
-        `, [date]
+            LIMIT $2
+            OFFSET $3
+        `, [date, limit, offset]
     )
 
     return result.rows;
+}
+
+//COUNT THE NUMBER OF APPOINTMENTS PER DAY
+export const countAppointmentByDate = async (date) => {
+    const result = await pool.query(
+        `
+        SELECT COUNT(*) AS totalAppointments
+        FROM appointments
+        WHERE date = $1
+        `, [ date ]
+    )
+    return Number(result.rows[0].totalAppointments);
 }
 
 //MODEL TO INSERT A NEW APPOINTMENT TO THE DATABASE

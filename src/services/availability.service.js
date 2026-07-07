@@ -2,7 +2,7 @@ import { addMinutes } from "../utils/duration.js";
 
 import { getWorkingHoursByDay } from "../models/workingHours.model.js"
 
-import { getAppointmentByDate } from "../models/appointment.model.js";
+import { countAppointmentByDate, getAppointmentByDate } from "../models/appointment.model.js";
 
 
 //THIS FUNCTION GENERATE AVAILABILITY SLOTS
@@ -29,14 +29,17 @@ const generateSlots = (start, end, duration = 60) => {//HERE THE FUNCTION GETS S
 }
 
 //THIS FUNCTION GETS THE AVAILABLE SLOTS
-export const getAvailableSlots = async (date) => {//GETS THE DATE AS A PARAMETER
+export const getAvailableSlots = async (date, limit, offset) => {//GETS THE DATE AS A PARAMETER
     const day = new Date(date + "T12:00:00").getDay();//THIS PART GETS THE DAY OF THE WEEK, THIS IS IMPORTANT TO KNOW THE SCHEDULE ACCORDING TO THE WORK DAYS
     
     const workingHours = await getWorkingHoursByDay(day);//THIS GETS THE WORK SCHEDULE
 
     if(!workingHours) return [];//IF THE WORKING HOURS RESPONSE WAS NULL OR FALSE STOPS THE FUNCTION AND RETURN A EMPTY ARRAY
 
-    const appointment = await getAppointmentByDate(date);//THIS GETS ALL THE DAILY APPOINTMENTS 
+    const appointment = await getAppointmentByDate(date, limit, offset);//THIS GETS ALL THE DAILY APPOINTMENTS 
+
+    //COUNT ALL THE APPOINTEMENTS
+    const totalAppointments = countAppointmentByDate(date);
 
     //THIS GENERATES ALL THE POSSIBLE SLOTS, THIS CREATES ALL THE SPACES
     const slots = generateSlots(
@@ -53,5 +56,8 @@ export const getAvailableSlots = async (date) => {//GETS THE DATE AS A PARAMETER
         })
     })
     
-    return available;//RETURNS AVAILABLE SPACES
+    return {
+        totalAppointments,
+        available
+    }//RETURNS AVAILABLE SPACES
 }
