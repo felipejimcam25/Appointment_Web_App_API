@@ -39,7 +39,7 @@ export const getAvailableSlots = async (date, limit, offset) => {//GETS THE DATE
     const appointment = await getAppointmentByDate(date, limit, offset);//THIS GETS ALL THE DAILY APPOINTMENTS 
 
     //COUNT ALL THE APPOINTEMENTS
-    const totalAppointments = countAppointmentByDate(date);
+    const totalAppointments = await countAppointmentByDate(date);
 
     //THIS GENERATES ALL THE POSSIBLE SLOTS, THIS CREATES ALL THE SPACES
     const slots = generateSlots(
