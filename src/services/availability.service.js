@@ -29,14 +29,18 @@ const generateSlots = (start, end, duration = 60) => {//HERE THE FUNCTION GETS S
 }
 
 //THIS FUNCTION GETS THE AVAILABLE SLOTS
-export const getAvailableSlots = async (date, limit, offset) => {//GETS THE DATE AS A PARAMETER
+export const getAvailableSlots = async (date, limit, page) => {//GETS THE DATE AS A PARAMETER
     const day = new Date(date + "T12:00:00").getDay();//THIS PART GETS THE DAY OF THE WEEK, THIS IS IMPORTANT TO KNOW THE SCHEDULE ACCORDING TO THE WORK DAYS
     
     const workingHours = await getWorkingHoursByDay(day);//THIS GETS THE WORK SCHEDULE
 
-    if(!workingHours) return [];//IF THE WORKING HOURS RESPONSE WAS NULL OR FALSE STOPS THE FUNCTION AND RETURN A EMPTY ARRAY
+    if(!workingHours) return {
+        totalAppointments: 0,
+        totalpages: 0,
+        available: []
+    };//IF THE WORKING HOURS RESPONSE WAS NULL OR FALSE STOPS THE FUNCTION AND RETURN A EMPTY ARRAY
 
-    const appointment = await getAppointmentByDate(date, limit, offset);//THIS GETS ALL THE DAILY APPOINTMENTS 
+    const appointments = await getAppointmentByDate(date);//THIS GETS ALL THE DAILY APPOINTMENTS 
 
     //COUNT ALL THE APPOINTEMENTS
     const totalAppointments = await countAppointmentByDate(date);
@@ -47,6 +51,8 @@ export const getAvailableSlots = async (date, limit, offset) => {//GETS THE DATE
         workingHours.end_time
     )
 
+    
+
     //THIS PART FILTERS AVAILABLE SPACES AND DELETE THOSE THAT ARE OCCUPIED
     const available = slots.filter(slot => {
         return !appointment.some(a => {
@@ -55,9 +61,18 @@ export const getAvailableSlots = async (date, limit, offset) => {//GETS THE DATE
             )
         })
     })
+
+
+    //pagination
+    const offset = (page - 1) * limit;
+
+    const paginatedAvailable = available.slice(offset, offset + limit);
     
     return {
+        page,
+        limit,
         totalAppointments,
-        available
+        totalPages: Math.ceil(available.length / limit),
+        available: paginatedAvailable
     }//RETURNS AVAILABLE SPACES
 }
