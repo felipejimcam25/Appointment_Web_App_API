@@ -55,7 +55,7 @@ export const getAvailableSlots = async (date, limit, page) => {//GETS THE DATE A
 
     //THIS PART FILTERS AVAILABLE SPACES AND DELETE THOSE THAT ARE OCCUPIED
     const available = slots.filter(slot => {
-        return !appointment.some(a => {
+        return !appointments.some(a => {
             return (
                 slot.start < a.end_time && slot.end > a.start_time
             )
