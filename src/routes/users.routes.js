@@ -67,7 +67,7 @@ router.post('/working-hours', verifyToken, isAdmin, addDayHours);
 //GET ALL USERS
 router.get('/users', verifyToken, isAdmin, getUsers);
 //GET USER BY ID
-router.get('/users/:id', verifyToken, isAdmin, getUserById);
+router.get('/users/:id', verifyToken, getUserById);
 //GET LOYALTY USERS
 router.get('/users/loyalty', verifyToken, isAdmin, userGetLoyaltyUsers);
 //UPDATE USERS BY ID
